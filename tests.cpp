@@ -55,24 +55,24 @@ void draw(void) {
   // gluLookAt(xC, yC, zC, xP, yP, zP, xU, yU, zU)
 	// Se o vetor up é z então yC parece z e zC parece y
   // gluLookAt(12.0, 4.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+	// gluLookAt(0.0, 4.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 	gluLookAt(0.0, 4.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 
 	// Definindo a cor corrente como branco
 	glColor3f(1.0f, 1.0f, 1.0f);
 
-	// Cilindro que forma o pescoço do robô
-	glPushMatrix();
+	// Rotinas que definem os atributos das quádricas
 	gluQuadricDrawStyle(qobj, GLU_FILL);
 	gluQuadricNormals(qobj, GLU_SMOOTH);
 	gluQuadricOrientation(qobj, GLU_OUTSIDE);
+
+	// Cilindro que forma o pescoço do robô
+	glPushMatrix();
 	gluCylinder(qobj, 0.45, 0.45, 0.08, 200, 200);
 	glPopMatrix();
 
 	// Cilindro que junta o braço direito do robô ao tronco
 	glPushMatrix();
-	gluQuadricDrawStyle(qobj, GLU_FILL);
-	gluQuadricNormals(qobj, GLU_SMOOTH);
-	gluQuadricOrientation(qobj, GLU_OUTSIDE);
 	glTranslatef(-0.65f, 0.0f, -0.1f);
 	glRotatef(90, 0.0f, 1.0f, 0.0f);
 	gluCylinder(qobj, 0.05, 0.05, 0.2, 100, 100);
@@ -80,12 +80,21 @@ void draw(void) {
 
 	// Cilindro que junta o braço esquerdo do robô ao tronco
 	glPushMatrix();
-	gluQuadricDrawStyle(qobj, GLU_FILL);
-	gluQuadricNormals(qobj, GLU_SMOOTH);
-	gluQuadricOrientation(qobj, GLU_OUTSIDE);
 	glTranslatef(0.45f, 0.0f, -0.1f);
 	glRotatef(90, 0.0f, 1.0f, 0.0f);
 	gluCylinder(qobj, 0.05, 0.05, 0.2, 100, 100);
+	glPopMatrix();
+
+	// Olho direito
+	glPushMatrix();
+	glTranslatef(-0.23f, 0.35f, 0.24f);
+	gluSphere(qobj, 0.07, 100, 100);
+	glPopMatrix();
+
+	// Olho esquerdo
+	glPushMatrix();
+	glTranslatef(0.23f, 0.35f, 0.24f);
+	gluSphere(qobj, 0.07, 100, 100);
 	glPopMatrix();
 
 	// Definindo a cor corrente como verde
@@ -93,9 +102,6 @@ void draw(void) {
 
 	// Antena direita do robô
 	glPushMatrix();
-	gluQuadricDrawStyle(qobj, GLU_FILL);
-	gluQuadricNormals(qobj, GLU_SMOOTH);
-	gluQuadricOrientation(qobj, GLU_OUTSIDE);
 	glTranslatef(-0.2f, 0.0f, 0.5f);
 	glRotatef(-45, 0.0f, 1.0f, 0.0f);
 	gluCylinder(qobj, 0.02, 0.02, 0.17, 100, 100);
@@ -105,14 +111,11 @@ void draw(void) {
 	glPushMatrix();
 	glTranslatef(-0.32f, 0.0f, 0.62);
 	glRotatef(-45, 0.0f, 1.0f, 0.0f);
-	meiaEsfera(0.02, 20);
+	meiaEsfera(0.02, 100);
 	glPopMatrix();
 
 	// Antena esquerda do robô
 	glPushMatrix();
-	gluQuadricDrawStyle(qobj, GLU_FILL);
-	gluQuadricNormals(qobj, GLU_SMOOTH);
-	gluQuadricOrientation(qobj, GLU_OUTSIDE);
 	glTranslatef(0.2f, 0.0f, 0.5f);
 	glRotatef(45, 0.0f, 1.0f, 0.0f);
 	gluCylinder(qobj, 0.02, 0.02, 0.17, 100, 100);
@@ -122,63 +125,42 @@ void draw(void) {
 	glPushMatrix();
 	glTranslatef(0.32f, 0.0f, 0.62);
 	glRotatef(45, 0.0f, 1.0f, 0.0f);
-	meiaEsfera(0.02, 20);
+	meiaEsfera(0.02, 100);
 	glPopMatrix();
 
 	// Meia esfera que irá compor a cabeça do robô
 	glPushMatrix();
 	glTranslatef (0.0f, 0.0f, 0.07f);
-	//meia_esfera(p, 0.5, 20);
-	meiaEsfera(0.5, 20);
+	meiaEsfera(0.5, 100);
 	glPopMatrix();
 
 	// Disco sob a meia esfera para fechá-la
 	glPushMatrix();
-	gluQuadricDrawStyle(qobj, GLU_FILL);
-	gluQuadricNormals(qobj, GLU_SMOOTH);
-	gluQuadricOrientation(qobj, GLU_OUTSIDE);
 	glTranslatef(0.0f, 0.0f, 0.07f);
 	gluDisk(qobj, 0.45, 0.5, 30, 30);
 	glPopMatrix();
 
 	// Disco que fecha a parte superior do cilindro que forma o tronco do robô
 	glPushMatrix();
-	gluQuadricDrawStyle(qobj, GLU_FILL);
-	gluQuadricNormals(qobj, GLU_SMOOTH);
-	gluQuadricOrientation(qobj, GLU_OUTSIDE);
-	//gluQuadricDrawStyle(qobj, GLU_LINE);
-	//gluQuadricNormals(qobj, GLU_NONE);
 	gluDisk(qobj, 0.45, 0.5, 30, 30);
 	glPopMatrix();
 
 	// Cilindro que forma o tronco do robô
 	glPushMatrix();
-	gluQuadricDrawStyle(qobj, GLU_FILL);
-	gluQuadricNormals(qobj, GLU_SMOOTH);
-	gluQuadricOrientation(qobj, GLU_OUTSIDE);
-	// gluQuadricDrawStyle(qobj, GLU_SILHOUETTE);
-	// gluQuadricNormals(qobj, GLU_NONE);
 	glTranslatef(0.0f, 0.0f, -0.8f);
 	gluCylinder(qobj, 0.5, 0.5, 0.8, 200, 200);
 	glPopMatrix();
 
-	// Esfera que fecha a parte inferior do cilindro que forma o tronco do robô
+	// // Esfera que fecha a parte inferior do cilindro que forma o tronco do robô
 	// glPushMatrix();
-	// gluQuadricDrawStyle(qobj, GLU_FILL);
-	// gluQuadricNormals(qobj, GLU_SMOOTH);
-	// gluQuadricOrientation(qobj, GLU_OUTSIDE);
-	// //gluQuadricDrawStyle(qobj, GLU_SILHOUETTE);
-	// //gluQuadricNormals(qobj, GLU_NONE);
-	// glScalef(1.7f, 1.0f, 1.0f);
-	// glTranslatef(0.0f, 0.0f, -0.78f);
-	// gluSphere(qobj, 0.3, 30, 30);
+	// glScalef(2.0f, 1.0f, 1.0f);
+	// glTranslatef(0.0f, 0.0f, -0.8f);
+	// glRotatef(180, 1.0f, 0.0f, 0.0f);
+	// gluSphere(qobj, 0.25, 100, 100);
 	// glPopMatrix();
 
 	// Braço direito do robô
 	glPushMatrix();
-	gluQuadricDrawStyle(qobj, GLU_FILL);
-	gluQuadricNormals(qobj, GLU_SMOOTH);
-	gluQuadricOrientation(qobj, GLU_OUTSIDE);
 	glTranslatef(-0.63f, 0.0f, -0.5f);
 	gluCylinder(qobj, 0.08, 0.08, 0.4, 100, 100);
 	glPopMatrix();
@@ -193,14 +175,11 @@ void draw(void) {
 	glPushMatrix();
 	glTranslatef(-0.63f, 0.0f, -0.5f);
 	glRotatef(180, 1.0f, 0.0f, 0.0f);
-	meiaEsfera(0.08, 20);
+	meiaEsfera(0.08, 100);
 	glPopMatrix();
 
 	// Braço esquerdo do robô
 	glPushMatrix();
-	gluQuadricDrawStyle(qobj, GLU_FILL);
-	gluQuadricNormals(qobj, GLU_SMOOTH);
-	gluQuadricOrientation(qobj, GLU_OUTSIDE);
 	glTranslatef(0.63f, 0.0f, -0.5f);
 	gluCylinder(qobj, 0.08, 0.08, 0.4, 100, 100);
 	glPopMatrix();
@@ -208,14 +187,14 @@ void draw(void) {
 	// Meia esfera que irá compor a topo do braço esquerdo do robô
 	glPushMatrix();
 	glTranslatef(0.63f, 0.0f, -0.1f);
-	meiaEsfera(0.08, 20);
+	meiaEsfera(0.08, 100);
 	glPopMatrix();
 
 	// Meia esfera que irá compor a base do braço esquerdo do robô
 	glPushMatrix();
 	glTranslatef(0.63f, 0.0f, -0.5f);
 	glRotatef(180, 1.0f, 0.0f, 0.0f);
-	meiaEsfera(0.08, 20);
+	meiaEsfera(0.08, 100);
 	glPopMatrix();
 
 	// Executa os comandos OpenGL
