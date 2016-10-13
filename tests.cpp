@@ -91,6 +91,40 @@ void draw(void) {
 	// Definindo a cor corrente como verde
 	glColor3f(0.0f, 1.0f, 0.0f);
 
+	// Antena direita do robô
+	glPushMatrix();
+	gluQuadricDrawStyle(qobj, GLU_FILL);
+	gluQuadricNormals(qobj, GLU_SMOOTH);
+	gluQuadricOrientation(qobj, GLU_OUTSIDE);
+	glTranslatef(-0.2f, 0.0f, 0.5f);
+	glRotatef(-45, 0.0f, 1.0f, 0.0f);
+	gluCylinder(qobj, 0.02, 0.02, 0.17, 100, 100);
+	glPopMatrix();
+
+	// Meia esfera que irá compor a topo da antena direita do robô
+	glPushMatrix();
+	glTranslatef(-0.32f, 0.0f, 0.62);
+	glRotatef(-45, 0.0f, 1.0f, 0.0f);
+	meiaEsfera(0.02, 20);
+	glPopMatrix();
+
+	// Antena esquerda do robô
+	glPushMatrix();
+	gluQuadricDrawStyle(qobj, GLU_FILL);
+	gluQuadricNormals(qobj, GLU_SMOOTH);
+	gluQuadricOrientation(qobj, GLU_OUTSIDE);
+	glTranslatef(0.2f, 0.0f, 0.5f);
+	glRotatef(45, 0.0f, 1.0f, 0.0f);
+	gluCylinder(qobj, 0.02, 0.02, 0.17, 100, 100);
+	glPopMatrix();
+
+	// Meia esfera que irá compor a topo da antena esquerda do robô
+	glPushMatrix();
+	glTranslatef(0.32f, 0.0f, 0.62);
+	glRotatef(45, 0.0f, 1.0f, 0.0f);
+	meiaEsfera(0.02, 20);
+	glPopMatrix();
+
 	// Meia esfera que irá compor a cabeça do robô
 	glPushMatrix();
 	glTranslatef (0.0f, 0.0f, 0.07f);
