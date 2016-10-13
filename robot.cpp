@@ -2,22 +2,20 @@
 #include <GL/glu.h>
 #include <math.h>
 
-static void meiaEsfera(float r, int m)
+static void meiaEsfera(float r, int m, int cut)
 {
-    int capped_cylinder_quality = m;
     int i, j;
     float tmp, nx, ny, nz, start_nx, start_ny, a, ca, sa;
-    const int n = capped_cylinder_quality*4;
+    const int n = m*4;
 
     float l = 0;
     a = float(M_PI*2.0)/float(n);
     sa = (float) sin(a);
     ca = (float) cos(a);
 
-    // draw first cylinder cap
     start_nx = 0;
     start_ny = 1;
-    for (j=0; j<(n/4); j++) {
+    for (j=0; j<(n/cut); j++) {
         float start_nx2 =  ca*start_nx + sa*start_ny;
         float start_ny2 = -sa*start_nx + ca*start_ny;
         nx = start_nx; ny = start_ny; nz = 0;
@@ -98,7 +96,7 @@ void draw(void) {
 	glPopMatrix();
 
 	// Definindo a cor corrente como verde
-	glColor3f(0.0f, 1.0f, 0.0f);
+	glColor3ub(164, 199, 57);
 
 	// Antena direita do robô
 	glPushMatrix();
@@ -111,7 +109,7 @@ void draw(void) {
 	glPushMatrix();
 	glTranslatef(-0.32f, 0.0f, 0.62);
 	glRotatef(-45, 0.0f, 1.0f, 0.0f);
-	meiaEsfera(0.02, 100);
+	meiaEsfera(0.02, 100, 4);
 	glPopMatrix();
 
 	// Antena esquerda do robô
@@ -125,13 +123,13 @@ void draw(void) {
 	glPushMatrix();
 	glTranslatef(0.32f, 0.0f, 0.62);
 	glRotatef(45, 0.0f, 1.0f, 0.0f);
-	meiaEsfera(0.02, 100);
+	meiaEsfera(0.02, 100, 4);
 	glPopMatrix();
 
 	// Meia esfera que irá compor a cabeça do robô
 	glPushMatrix();
 	glTranslatef (0.0f, 0.0f, 0.07f);
-	meiaEsfera(0.5, 100);
+	meiaEsfera(0.5, 100, 4);
 	glPopMatrix();
 
 	// Disco sob a meia esfera para fechá-la
@@ -147,55 +145,91 @@ void draw(void) {
 
 	// Cilindro que forma o tronco do robô
 	glPushMatrix();
-	glTranslatef(0.0f, 0.0f, -0.8f);
-	gluCylinder(qobj, 0.5, 0.5, 0.8, 200, 200);
+	glTranslatef(0.0f, 0.0f, -0.75f);
+	gluCylinder(qobj, 0.5, 0.5, 0.75, 200, 200);
 	glPopMatrix();
 
-	// // Esfera que fecha a parte inferior do cilindro que forma o tronco do robô
-	// glPushMatrix();
-	// glScalef(2.0f, 1.0f, 1.0f);
-	// glTranslatef(0.0f, 0.0f, -0.8f);
-	// glRotatef(180, 1.0f, 0.0f, 0.0f);
-	// gluSphere(qobj, 0.25, 100, 100);
-	// glPopMatrix();
+	// Meia esfera que fecha a parte inferior do cilindro que forma o tronco do robô
+	glPushMatrix();
+	glTranslatef(0.0f, 0.0f, -0.75f);
+  glRotatef(180, 1.0f, 0.0f, 0.0f);
+	//meiaEsfera(0.5, 100, 25);
+  meiaEsfera(0.5, 100, 27);
+	glPopMatrix();
+
+  // Disco que fecha a base do tronco
+  glPushMatrix();
+  glTranslatef(0.0f, 0.0f, -0.86f);
+  gluDisk(qobj, 0.0, 0.49, 30, 30);
+  glPopMatrix();
 
 	// Braço direito do robô
 	glPushMatrix();
-	glTranslatef(-0.63f, 0.0f, -0.5f);
-	gluCylinder(qobj, 0.08, 0.08, 0.4, 100, 100);
+	glTranslatef(-0.63f, 0.0f, -0.55f);
+	gluCylinder(qobj, 0.09, 0.09, 0.45, 100, 100);
 	glPopMatrix();
 
 	// Meia esfera que irá compor a topo do braço direito do robô
 	glPushMatrix();
 	glTranslatef(-0.63f, 0.0f, -0.1f);
-	meiaEsfera(0.08, 20);
+	meiaEsfera(0.09, 20, 4);
 	glPopMatrix();
 
 	// Meia esfera que irá compor a base do braço direito do robô
 	glPushMatrix();
-	glTranslatef(-0.63f, 0.0f, -0.5f);
+	glTranslatef(-0.63f, 0.0f, -0.55f);
 	glRotatef(180, 1.0f, 0.0f, 0.0f);
-	meiaEsfera(0.08, 100);
+	meiaEsfera(0.09, 100, 4);
 	glPopMatrix();
 
 	// Braço esquerdo do robô
 	glPushMatrix();
-	glTranslatef(0.63f, 0.0f, -0.5f);
-	gluCylinder(qobj, 0.08, 0.08, 0.4, 100, 100);
+	glTranslatef(0.63f, 0.0f, -0.55f);
+	gluCylinder(qobj, 0.09, 0.09, 0.45, 100, 100);
 	glPopMatrix();
 
 	// Meia esfera que irá compor a topo do braço esquerdo do robô
 	glPushMatrix();
 	glTranslatef(0.63f, 0.0f, -0.1f);
-	meiaEsfera(0.08, 100);
+	meiaEsfera(0.09, 100, 4);
 	glPopMatrix();
 
 	// Meia esfera que irá compor a base do braço esquerdo do robô
 	glPushMatrix();
-	glTranslatef(0.63f, 0.0f, -0.5f);
+	glTranslatef(0.63f, 0.0f, -0.55f);
 	glRotatef(180, 1.0f, 0.0f, 0.0f);
-	meiaEsfera(0.08, 100);
+	meiaEsfera(0.09, 100, 4);
 	glPopMatrix();
+
+  // Perna esquerda do robô
+	glPushMatrix();
+  glScalef(1.0f, 1.5f, 1.0f);
+	glTranslatef(0.20f, 0.0f, -1.15f);
+	gluCylinder(qobj, 0.1, 0.1, 0.4, 100, 100);
+	glPopMatrix();
+
+  // Meia esfera que irá compor a base da perna esquerda do robô
+  glPushMatrix();
+  glScalef(1.0f, 1.5f, 1.0f);
+  glTranslatef(0.20f, 0.0f, -1.15f);
+  glRotatef(180, 1.0f, 0.0f, 0.0f);
+  meiaEsfera(0.1, 100, 4);
+  glPopMatrix();
+
+  // Perna direita do robô
+  glPushMatrix();
+  glScalef(1.0f, 1.5f, 1.0f);
+  glTranslatef(-0.20f, 0.0f, -1.15f);
+  gluCylinder(qobj, 0.1, 0.1, 0.4, 100, 100);
+  glPopMatrix();
+
+  // Meia esfera que irá compor a base da perna direita do robô
+  glPushMatrix();
+  glScalef(1.0f, 1.5f, 1.0f);
+  glTranslatef(-0.20f, 0.0f, -1.15f);
+  glRotatef(180, 1.0f, 0.0f, 0.0f);
+  meiaEsfera(0.1, 100, 4);
+  glPopMatrix();
 
 	// Executa os comandos OpenGL
   glutSwapBuffers();
@@ -203,16 +237,14 @@ void draw(void) {
 }
 
 void initialize(void) {
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_SMOOTH);
-
-		GLfloat luzAmbiente[4] = { 0.3,0.3,0.3,1.0 };
-		GLfloat luzDifusa[4] = { 0.2,0.2,0.2,1.0 };	   // "cor"
-		GLfloat luzEspecular[4] = { 0.7,0.7,0.7, 1.0 };// "brilho"
-		GLfloat posicaoLuz[4] = { 0.0, 20.0, 20.0, 1.0 };
+    GLfloat luzAmbienteGlobal[] = {0.2, 0.2, 0.2, 1.0};
+		GLfloat luzAmbiente[] = {0.0, 0.0, 0.0, 1.0};
+		GLfloat luzDifusa[] = {1.0, 1.0, 1.0, 1.0};	   // "cor"
+		GLfloat luzEspecular[] = {1.0, 1.0, 1.0, 1.0};// "brilho"
+		GLfloat posicaoLuz[] = {-20.0, 20.0, 40.0, 1.0};
 		// Capacidade de brilho do material
-		GLfloat especularidade[4] = { 1.0,1.0,1.0,1.0 };
-		GLint especMaterial = 10;
+		GLfloat especularidade[] = {1.0, 1.0, 1.0, 1.0};
+		GLint especMaterial = 90;
 
 		// Define a cor de fundo da janela de visualização como preta
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -221,12 +253,12 @@ void initialize(void) {
 		glShadeModel(GL_SMOOTH);
 
 		// Define a refletância do material
-		glMaterialfv(GL_FRONT, GL_SPECULAR, especularidade);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, especularidade);
 		// Define a concentração do brilho
-		glMateriali(GL_FRONT, GL_SHININESS, especMaterial);
+		glMateriali(GL_FRONT_AND_BACK, GL_SHININESS, especMaterial);
 
 		// Ativa o uso da luz ambiente
-		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
+		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbienteGlobal);
 
 		// Define os parâmetros da luz de número 0
 		glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
@@ -234,16 +266,25 @@ void initialize(void) {
 		glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular);
 		glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz);
 
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 		// Habilita a definição da cor do material a partir da cor corrente
 		glEnable(GL_COLOR_MATERIAL);
+
 		//Habilita o uso de iluminação
 		glEnable(GL_LIGHTING);
 		// Habilita a luz de número 0
 		glEnable(GL_LIGHT0);
+
+    glEnable(GL_NORMALIZE);
+    glEnable(GL_RESCALE_NORMAL);
+
 		// Habilita o depth-buffering
 		glEnable(GL_DEPTH_TEST);
 	  // Indica a função de teste
 		glDepthFunc(GL_LESS);
+
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_SMOOTH);
 }
 
 void reshape(GLsizei w, GLsizei h) {
