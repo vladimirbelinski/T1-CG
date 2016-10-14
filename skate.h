@@ -1,0 +1,1 @@
+void skate(GLUquadricObj *qobj);
