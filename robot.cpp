@@ -1,27 +1,13 @@
 #include "misc.h"
 #include "robot.h"
 
-void android(GLUquadricObj *qobj) {
+void head(GLUquadricObj *qobj){
   // Definindo a cor corrente como branco
   glColor3f(1.0f, 1.0f, 1.0f);
 
   // Cilindro que forma o pescoço do robô
   glPushMatrix();
   gluCylinder(qobj, 0.45, 0.45, 0.08, 200, 200);
-  glPopMatrix();
-
-  // Cilindro que junta o braço direito do robô ao tronco
-  glPushMatrix();
-  glTranslatef(-0.65f, 0.0f, -0.1f);
-  glRotatef(90, 0.0f, 1.0f, 0.0f);
-  gluCylinder(qobj, 0.05, 0.05, 0.2, 100, 100);
-  glPopMatrix();
-
-  // Cilindro que junta o braço esquerdo do robô ao tronco
-  glPushMatrix();
-  glTranslatef(0.45f, 0.0f, -0.1f);
-  glRotatef(90, 0.0f, 1.0f, 0.0f);
-  gluCylinder(qobj, 0.05, 0.05, 0.2, 100, 100);
   glPopMatrix();
 
   // Olho direito
@@ -73,13 +59,18 @@ void android(GLUquadricObj *qobj) {
   meiaEsfera(0.5, 100, 4);
   glPopMatrix();
 
-  // Disco sob a meia esfera para fechá-la
+  // Disco que fecha a meia esfera que forma a cabeça do robô
   glPushMatrix();
   glTranslatef(0.0f, 0.0f, 0.07f);
   // Rotacionado para funcionar a iluminação (devido a posição do vetor normal)
   glRotatef(180, 1.0f, 0.0f, 0.0);
   gluDisk(qobj, 0.45, 0.503, 30, 30);
   glPopMatrix();
+}
+
+void body(GLUquadricObj *qobj){
+  // Definindo a cor corrente como verde
+  glColor3ub(164, 199, 57);
 
   // Disco que fecha a parte superior do cilindro que forma o tronco do robô
   glPushMatrix();
@@ -106,6 +97,21 @@ void android(GLUquadricObj *qobj) {
   glRotatef(180, 1.0f, 0.0f, 0.0);
   gluDisk(qobj, 0.0, 0.49, 30, 30);
   glPopMatrix();
+}
+
+void rightArm(GLUquadricObj *qobj){
+  // Definindo a cor corrente como branco
+  glColor3f(1.0f, 1.0f, 1.0f);
+
+  // Cilindro que junta o braço direito do robô ao tronco
+  glPushMatrix();
+  glTranslatef(-0.65f, 0.0f, -0.1f);
+  glRotatef(90, 0.0f, 1.0f, 0.0f);
+  gluCylinder(qobj, 0.05, 0.05, 0.2, 100, 100);
+  glPopMatrix();
+
+  // Definindo a cor corrente como verde
+  glColor3ub(164, 199, 57);
 
   // Braço direito do robô
   glPushMatrix();
@@ -125,6 +131,21 @@ void android(GLUquadricObj *qobj) {
   glRotatef(180, 1.0f, 0.0f, 0.0f);
   meiaEsfera(0.09, 100, 4);
   glPopMatrix();
+}
+
+void leftArm(GLUquadricObj *qobj){
+  // Definindo a cor corrente como branco
+  glColor3f(1.0f, 1.0f, 1.0f);
+
+  // Cilindro que junta o braço esquerdo do robô ao tronco
+  glPushMatrix();
+  glTranslatef(0.45f, 0.0f, -0.1f);
+  glRotatef(90, 0.0f, 1.0f, 0.0f);
+  gluCylinder(qobj, 0.05, 0.05, 0.2, 100, 100);
+  glPopMatrix();
+
+  // Definindo a cor corrente como verde
+  glColor3ub(164, 199, 57);
 
   // Braço esquerdo do robô
   glPushMatrix();
@@ -144,12 +165,37 @@ void android(GLUquadricObj *qobj) {
   glRotatef(180, 1.0f, 0.0f, 0.0f);
   meiaEsfera(0.09, 100, 4);
   glPopMatrix();
+}
+
+void rightLeg(GLUquadricObj *qobj){
+  // Definindo a cor corrente como verde
+  glColor3ub(164, 199, 57);
+
+  // Perna direita do robô
+  glPushMatrix();
+  glScalef(1.0f, 1.5f, 1.0f);
+  glTranslatef(-0.20f, 0.0f, -1.15f);
+  gluCylinder(qobj, 0.1, 0.1, 0.8, 100, 100);
+  glPopMatrix();
+
+  // Meia esfera que irá compor a base da perna direita do robô
+  glPushMatrix();
+  glScalef(1.0f, 1.5f, 1.0f);
+  glTranslatef(-0.20f, 0.0f, -1.15f);
+  glRotatef(180, 1.0f, 0.0f, 0.0f);
+  meiaEsfera(0.1, 100, 4);
+  glPopMatrix();
+}
+
+void leftLeg(GLUquadricObj *qobj){
+  // Definindo a cor corrente como verde
+  glColor3ub(164, 199, 57);
 
   // Perna esquerda do robô
   glPushMatrix();
   glScalef(1.0f, 1.5f, 1.0f);
   glTranslatef(0.20f, 0.0f, -1.15f);
-  gluCylinder(qobj, 0.1, 0.1, 0.4, 100, 100);
+  gluCylinder(qobj, 0.1, 0.1, 0.8, 100, 100);
   glPopMatrix();
 
   // Meia esfera que irá compor a base da perna esquerda do robô
@@ -159,19 +205,44 @@ void android(GLUquadricObj *qobj) {
   glRotatef(180, 1.0f, 0.0f, 0.0f);
   meiaEsfera(0.1, 100, 4);
   glPopMatrix();
+}
 
-  // Perna direita do robô
+void android(GLUquadricObj *qobj) {
   glPushMatrix();
-  glScalef(1.0f, 1.5f, 1.0f);
-  glTranslatef(-0.20f, 0.0f, -1.15f);
-  gluCylinder(qobj, 0.1, 0.1, 0.4, 100, 100);
+  // Depois de pegar impulso o android fica de lado no skate
+  // [glRotatef(-90, 0.0f, 0.0f, 1.0f) para ficar de lado, glTranslatef(0.0f, -0.2f, 0.0f) para ficar no centro do skate]
+  // glRotatef(-90, 0.0f, 0.0f, 1.0f);
+  // glTranslatef(0.0f, -0.2f, 0.0f);
+
+  // Quando está pegando impulso todo o corpo desce, exceto a perna direita que está sob o skate.
+  // Isso simula o movimento de flexão do joelho [glTranslatef(0.0f, 0.0f, desloc) - desloc de 0 a -0.15]
+  glPushMatrix();
+  glTranslatef(0.0f, 0.0f, -0.15f);
+
+  head(qobj);
+  body(qobj);
+
+  glPushMatrix();
+  // Quando está pegando impulso:
+  // O braço esquerdo vai para frente e volta à origem [glRotatef(angle, 1.0f, 0.0f, 0.0f) - angle de 0 a 45 graus];
+  // O braço direito sobe e volta à origem [glRotatef(angle, 0.0f, 1.0f, 0.0f) - angle de 0 a 6 graus];
+  // A perna esquerda vai para trás e volta à origem [glRotatef(angle, 1.0f, 0.0f, 0.0f) - angle de -13 a 0 graus].
+  glRotatef(45, 1.0f, 0.0f, 0.0f);
+  leftArm(qobj);
   glPopMatrix();
 
-  // Meia esfera que irá compor a base da perna direita do robô
   glPushMatrix();
-  glScalef(1.0f, 1.5f, 1.0f);
-  glTranslatef(-0.20f, 0.0f, -1.15f);
-  glRotatef(180, 1.0f, 0.0f, 0.0f);
-  meiaEsfera(0.1, 100, 4);
+  glRotatef(6, 0.0f, 1.0f, 0.0f);
+  rightArm(qobj);
+  glPopMatrix();
+
+  glPushMatrix();
+  glRotatef(-13, 1.0f, 0.0f, 0.0f);
+  leftLeg(qobj);
+  glPopMatrix();
+
+  glPopMatrix();
+
+  rightLeg(qobj);
   glPopMatrix();
 }
