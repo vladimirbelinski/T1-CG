@@ -20,8 +20,8 @@ void draw(void) {
   // gluLookAt(xC, yC, zC, xP, yP, zP, xU, yU, zU)
   // Se o vetor up é z então yC parece z e zC parece y
   // gluLookAt(12.0, 4.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-  // gluLookAt(0.0, 4.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-  gluLookAt(7.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+  // gluLookAt(0.0, 5.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+  gluLookAt(6.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 
   glPushMatrix();
   glRotatef(alpha_rotateAll += 1.0f, 0.0f, 0.0f, 1.0f);
@@ -102,7 +102,7 @@ void reshape(GLsizei w, GLsizei h) {
 }
 
 void redraw(int) {
-  //void redraw() {
+// void redraw() {
   glutPostRedisplay();
   draw();
   glutTimerFunc(20,redraw,1);
@@ -112,10 +112,10 @@ int main(int argc, char **argv) {
   glutInit(&argc, argv);
   // GLUT_DEPTH para alocar Z-buffer
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-  glutInitWindowSize(1600, 1200);
+  glutInitWindowSize(700, 1200);
   glutInitWindowPosition(10, 10);
   glutCreateWindow("Android Robot");
-  //glutIdleFunc(redraw);
+  // glutIdleFunc(redraw);
   glutTimerFunc(20,redraw,1);
   glutDisplayFunc(draw);
   glutReshapeFunc(reshape);
