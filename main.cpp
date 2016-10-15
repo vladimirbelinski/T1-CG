@@ -4,7 +4,7 @@
 #include "skate.h"
 #include "robot.h"
 
-GLfloat alpha = 0.0f;
+GLfloat alpha_rotateAll = 0.0f;
 GLUquadricObj *qobj;
 
 // Função callback chamada para fazer o desenho
@@ -21,10 +21,11 @@ void draw(void) {
   // Se o vetor up é z então yC parece z e zC parece y
   // gluLookAt(12.0, 4.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
   // gluLookAt(0.0, 4.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-  gluLookAt(5.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+  gluLookAt(7.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 
   glPushMatrix();
-  glRotatef(alpha+=3.0f, 0.0f, 0.0f, 1.0f);
+  glRotatef(alpha_rotateAll += 1.0f, 0.0f, 0.0f, 1.0f);
+  glTranslatef(1.5f, 0.0f, 0.0f);
   // Rotinas que definem os atributos das quádricas
   gluQuadricDrawStyle(qobj, GLU_FILL);
   gluQuadricNormals(qobj, GLU_SMOOTH);

@@ -1,6 +1,13 @@
 #include "misc.h"
 #include "robot.h"
 
+GLfloat alpha_flexAll = 0.0f;
+GLfloat alpha_rotateHead = 0.0f;
+GLfloat alpha_rotateLeftLeg = 0.0f;
+GLfloat alpha_rotateLeftArm = 0.0f;
+GLfloat alpha_rotateRightArm = 0.0f;
+GLint flexAllMov, headMov, leftLegMov, leftArmMov, rightArmMov;
+
 void head(GLUquadricObj *qobj){
   // Definindo a cor corrente como branco
   glColor3f(1.0f, 1.0f, 1.0f);
@@ -217,27 +224,87 @@ void android(GLUquadricObj *qobj) {
   // Quando está pegando impulso todo o corpo desce, exceto a perna direita que está sob o skate.
   // Isso simula o movimento de flexão do joelho [glTranslatef(0.0f, 0.0f, desloc) - desloc de 0 a -0.15]
   glPushMatrix();
-  glTranslatef(0.0f, 0.0f, -0.15f);
+  if (flexAllMov == 1 and alpha_flexAll > -0.15f)
+    alpha_flexAll -= 0.001153846f;
+  else
+    flexAllMov = 2;
 
-  head(qobj);
-  body(qobj);
+  if (flexAllMov == 2 and alpha_flexAll <= 0.0f)
+    alpha_flexAll += 0.001153846f;
+  else
+    flexAllMov = 1;
 
-  glPushMatrix();
+  glTranslatef(0.0f, 0.0f, alpha_flexAll);
+
   // Quando está pegando impulso:
+  // A cabeça vira à esquerda e volta à origem [glRotatef(angle, 0.0f, 0.0f, 1.0f) - angle de 0 a -30 graus]
   // O braço esquerdo vai para frente e volta à origem [glRotatef(angle, 1.0f, 0.0f, 0.0f) - angle de 0 a 45 graus];
   // O braço direito sobe e volta à origem [glRotatef(angle, 0.0f, 1.0f, 0.0f) - angle de 0 a 6 graus];
   // A perna esquerda vai para trás e volta à origem [glRotatef(angle, 1.0f, 0.0f, 0.0f) - angle de -13 a 0 graus].
-  glRotatef(45, 1.0f, 0.0f, 0.0f);
+
+  //Movimentação da cabeça
+  glPushMatrix();
+  if (headMov == 1 and alpha_rotateHead > -30.0f)
+    alpha_rotateHead -= 0.2307f;
+  else
+    headMov = 2;
+
+  if (headMov == 2 and alpha_rotateHead <= 0.0f)
+    alpha_rotateHead += 0.2307f;
+  else
+    headMov = 1;
+
+  glRotatef(alpha_rotateHead, 0.0f, 0.0f, 1.0f);
+  head(qobj);
+  glPopMatrix();
+
+  body(qobj);
+
+  // Movimentação do braço esquerdo
+  glPushMatrix();
+  if (leftArmMov == 1 and alpha_rotateLeftArm < 45.0f)
+    alpha_rotateLeftArm += 0.3461;
+  else
+    leftArmMov = 2;
+
+  if (leftArmMov == 2 and alpha_rotateLeftArm >= 0.0f)
+    alpha_rotateLeftArm -= 0.3461f;
+  else
+    leftArmMov = 1;
+
+  glRotatef(alpha_rotateLeftArm, 1.0f, 0.0f, 0.0f);
   leftArm(qobj);
   glPopMatrix();
 
+  // Movimentação do braço direito
   glPushMatrix();
-  glRotatef(6, 0.0f, 1.0f, 0.0f);
+  if (rightArmMov == 1 and alpha_rotateRightArm < 6.0f)
+    alpha_rotateRightArm += 0.0461;
+  else
+    rightArmMov = 2;
+
+  if (rightArmMov == 2 and alpha_rotateRightArm >= 0.0f)
+    alpha_rotateRightArm -= 0.0461f;
+  else
+    rightArmMov = 1;
+
+  glRotatef(alpha_rotateRightArm, 0.0f, 1.0f, 0.0f);
   rightArm(qobj);
   glPopMatrix();
 
+  // Movimentação da perna esquerda
   glPushMatrix();
-  glRotatef(-13, 1.0f, 0.0f, 0.0f);
+  if (leftLegMov == 1 and alpha_rotateLeftLeg > -13.0f)
+    alpha_rotateLeftLeg -= 0.1f;
+  else
+    leftLegMov = 2;
+
+  if (leftLegMov == 2 and alpha_rotateLeftLeg <= 0.0f)
+    alpha_rotateLeftLeg += 0.1f;
+  else
+    leftLegMov = 1;
+
+  glRotatef(alpha_rotateLeftLeg, 1.0f, 0.0f, 0.0f);
   leftLeg(qobj);
   glPopMatrix();
 
