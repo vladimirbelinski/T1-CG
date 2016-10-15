@@ -112,7 +112,7 @@ int main(int argc, char **argv) {
   glutInit(&argc, argv);
   // GLUT_DEPTH para alocar Z-buffer
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-  glutInitWindowSize(700, 1200);
+  glutInitWindowSize(800, 720);
   glutInitWindowPosition(10, 10);
   glutCreateWindow("Android Robot");
   // glutIdleFunc(redraw);

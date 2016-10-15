@@ -218,19 +218,19 @@ void android(GLUquadricObj *qobj) {
   glPushMatrix();
   // Depois de pegar impulso o android fica de lado no skate
   // [glRotatef(-90, 0.0f, 0.0f, 1.0f) para ficar de lado, glTranslatef(0.0f, -0.2f, 0.0f) para ficar no centro do skate]
-  // glRotatef(-90, 0.0f, 0.0f, 1.0f);
-  // glTranslatef(0.0f, -0.2f, 0.0f);
+  //glRotatef(-90, 0.0f, 0.0f, 1.0f);
+  //glTranslatef(0.0f, -0.2f, 0.0f);
 
   // Quando está pegando impulso todo o corpo desce, exceto a perna direita que está sob o skate.
   // Isso simula o movimento de flexão do joelho [glTranslatef(0.0f, 0.0f, desloc) - desloc de 0 a -0.15]
   glPushMatrix();
   if (flexAllMov == 1 and alpha_flexAll > -0.15f)
-    alpha_flexAll -= 0.001153846f;
+    alpha_flexAll -= 0.00346153f;
   else
     flexAllMov = 2;
 
   if (flexAllMov == 2 and alpha_flexAll <= 0.0f)
-    alpha_flexAll += 0.001153846f;
+    alpha_flexAll += 0.00346153;
   else
     flexAllMov = 1;
 
@@ -245,12 +245,12 @@ void android(GLUquadricObj *qobj) {
   //Movimentação da cabeça
   glPushMatrix();
   if (headMov == 1 and alpha_rotateHead > -30.0f)
-    alpha_rotateHead -= 0.2307f;
+    alpha_rotateHead -= 0.692307f;
   else
     headMov = 2;
 
   if (headMov == 2 and alpha_rotateHead <= 0.0f)
-    alpha_rotateHead += 0.2307f;
+    alpha_rotateHead += 0.692307f;
   else
     headMov = 1;
 
@@ -263,12 +263,12 @@ void android(GLUquadricObj *qobj) {
   // Movimentação do braço esquerdo
   glPushMatrix();
   if (leftArmMov == 1 and alpha_rotateLeftArm < 45.0f)
-    alpha_rotateLeftArm += 0.3461;
+    alpha_rotateLeftArm += 1.038461f;
   else
     leftArmMov = 2;
 
   if (leftArmMov == 2 and alpha_rotateLeftArm >= 0.0f)
-    alpha_rotateLeftArm -= 0.3461f;
+    alpha_rotateLeftArm -= 1.038461f;
   else
     leftArmMov = 1;
 
@@ -279,12 +279,12 @@ void android(GLUquadricObj *qobj) {
   // Movimentação do braço direito
   glPushMatrix();
   if (rightArmMov == 1 and alpha_rotateRightArm < 6.0f)
-    alpha_rotateRightArm += 0.0461;
+    alpha_rotateRightArm += 0.138461f;
   else
     rightArmMov = 2;
 
   if (rightArmMov == 2 and alpha_rotateRightArm >= 0.0f)
-    alpha_rotateRightArm -= 0.0461f;
+    alpha_rotateRightArm -= 0.138461f;
   else
     rightArmMov = 1;
 
@@ -295,12 +295,12 @@ void android(GLUquadricObj *qobj) {
   // Movimentação da perna esquerda
   glPushMatrix();
   if (leftLegMov == 1 and alpha_rotateLeftLeg > -13.0f)
-    alpha_rotateLeftLeg -= 0.1f;
+    alpha_rotateLeftLeg -= 0.3f;
   else
     leftLegMov = 2;
 
   if (leftLegMov == 2 and alpha_rotateLeftLeg <= 0.0f)
-    alpha_rotateLeftLeg += 0.1f;
+    alpha_rotateLeftLeg += 0.3f;
   else
     leftLegMov = 1;
 
