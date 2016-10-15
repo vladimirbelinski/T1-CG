@@ -1,5 +1,7 @@
 #include "misc.h"
 #include "robot.h"
+#include <time.h>
+#include <stdio.h>
 
 GLfloat alpha_flexAll = 0.0f;
 GLfloat alpha_rotateHead = 0.0f;
@@ -7,6 +9,10 @@ GLfloat alpha_rotateLeftLeg = 0.0f;
 GLfloat alpha_rotateLeftArm = 0.0f;
 GLfloat alpha_rotateRightArm = 0.0f;
 GLint flexAllMov, headMov, leftLegMov, leftArmMov, rightArmMov;
+
+int idle = 0;
+time_t start;
+GLfloat alpha_idleRobot, y_idlePosition;
 
 void head(GLUquadricObj *qobj){
   // Definindo a cor corrente como branco
@@ -214,8 +220,38 @@ void leftLeg(GLUquadricObj *qobj){
   glPopMatrix();
 }
 
+void idleAndroid(GLUquadricObj *qobj) {
+  int vel = 15; //Quanto maior o valor, mais lenta é a transição
+  int tempo = 5; //Quanto tempo(segundos) o robo vai ficar parado em cida do skate
+  if (idle == 4) { y_idlePosition = 0.0f; alpha_idleRobot = 0.0f; idle++; }
+  if (idle == 5) {
+    alpha_idleRobot -= 90.0 / vel;
+    y_idlePosition -= 0.2 / vel;
+    if (alpha_idleRobot <= -90.0f) idle++; //<= por causa da precisão....
+  }
+  if (idle == 6) { start = time(0); idle++; }
+  if (idle == 7 && difftime(time(0), start) >= tempo) idle++;
+  if (idle == 8) {
+    alpha_idleRobot += 90.0 / vel;
+    y_idlePosition += 0.2 / vel;
+    if (alpha_idleRobot >= 0.0f) idle = 0; //>= por causa da precisão
+  }
+  // [glRotatef(-90, 0.0f, 0.0f, 1.0f) para ficar de lado, glTranslatef(0.0f, -0.2f, 0.0f) para ficar no centro do skate]
+  glRotatef(alpha_idleRobot, 0.0f, 0.0f, 1.0f);
+  glTranslatef(0.0f, y_idlePosition, 0.0f);
+  //Será que precisa de tanto push e pop?
+  glPushMatrix(); head(qobj); glPopMatrix();
+  glPushMatrix(); body(qobj); glPopMatrix();
+  glPushMatrix(); leftArm(qobj); glPopMatrix();
+  glPushMatrix(); rightArm(qobj); glPopMatrix();
+  glPushMatrix(); leftLeg(qobj); glPopMatrix();
+  glPushMatrix(); rightLeg(qobj); glPopMatrix();
+}
+
 void android(GLUquadricObj *qobj) {
   glPushMatrix();
+  if (idle >= 4) { idleAndroid(qobj); glPopMatrix(); return; }
+
   // Depois de pegar impulso o android fica de lado no skate
   // [glRotatef(-90, 0.0f, 0.0f, 1.0f) para ficar de lado, glTranslatef(0.0f, -0.2f, 0.0f) para ficar no centro do skate]
   //glRotatef(-90, 0.0f, 0.0f, 1.0f);
@@ -232,7 +268,7 @@ void android(GLUquadricObj *qobj) {
   if (flexAllMov == 2 and alpha_flexAll <= 0.0f)
     alpha_flexAll += 0.00346153;
   else
-    flexAllMov = 1;
+    { idle += flexAllMov == 2; flexAllMov = 1; } //Sempre cai nesse else quando flexAllMov != 2 e só quero incrementar o idle a primeira vez que entrar aqui
 
   glTranslatef(0.0f, 0.0f, alpha_flexAll);
 
