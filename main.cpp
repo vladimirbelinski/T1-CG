@@ -46,9 +46,14 @@ void initialize(void) {
   GLfloat mat_shininess[] = { 90.0 };
 
   GLfloat light0_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
-  GLfloat light0_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };	    // "cor"
+  GLfloat light0_diffuse[] = { 0.9, 0.9, 0.9, 1.0 };	    // "cor"
   GLfloat light0_specular[] = { 0.8, 0.8, 0.8, 1.0 };     // "brilho"
   GLfloat light0_position[] = { -20.0, 20.0, 40.0, 1.0 };
+
+  GLfloat light1_ambient[] = { 0.1, 0.1, 0.1, 1.0 };
+  GLfloat light1_diffuse[] = { 0.2, 0.2, 0.2, 1.0 };
+  GLfloat light1_specular[] = { 0.7, 0.7, 0.7, 1.0 };
+  GLfloat light1_position[] = { 0.0, 1.0, -30.0, 1.0 };
 
   // Definição da cor de fundo da janela de visualização como preta
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -69,15 +74,20 @@ void initialize(void) {
   glLightfv(GL_LIGHT0, GL_SPECULAR, light0_specular);
   glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
 
+  // Definição dos parâmetros da luz de número 1
+  glLightfv(GL_LIGHT1, GL_AMBIENT, light1_ambient);
+  glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_diffuse);
+  glLightfv(GL_LIGHT1, GL_SPECULAR, light1_specular);
+  glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
+
   // Habilitação da definição da cor do material a partir da cor corrente
   glEnable(GL_COLOR_MATERIAL);
-  //glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-  //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  //glPolygonMode(GL_FRONT_AND_BACK, GL_SMOOTH);
+  glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 
   // Habilitação do uso de iluminação e das luzes
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
+  glEnable(GL_LIGHT1);
 
   // Habilitação da normalização
   glEnable(GL_NORMALIZE);
