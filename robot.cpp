@@ -255,7 +255,21 @@ void idleAndroid(GLUquadricObj *qobj) {
     
   glTranslatef(0.0f, 0.0f, alpha_flexAll);
   
+  glPushMatrix();
+  if (headMov == 1 and alpha_rotateHead > -30.0f)
+    alpha_rotateHead -= 2.076921f/2;
+  else
+    headMov = 2;
+
+  if (headMov == 2 and alpha_rotateHead <= 0.0f)
+    alpha_rotateHead += 2.076921f/2;
+  else
+    headMov = 1;
+
+  glRotatef(alpha_rotateHead, 0.0f, 0.0f, 1.0f);
   head(qobj);
+  glPopMatrix();
+  
   body(qobj);
   
   // Movimentação do braço direito
