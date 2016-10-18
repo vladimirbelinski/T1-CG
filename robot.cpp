@@ -297,7 +297,7 @@ void idleAndroid(GLUquadricObj *qobj) {
 
 void android(GLUquadricObj *qobj) {
   glPushMatrix();
-  if (idle >= 4) { idleAndroid(qobj); glPopMatrix(); alpha_rotateLeftLeg = 0.0f; return; }
+  if (idle >= 4) { idleAndroid(qobj); glPopMatrix(); alpha_rotateLeftArm = 0.0f; alpha_rotateLeftLeg = 0.0f; return; }
 
   // Quando está pegando impulso todo o corpo desce, exceto a perna direita que está sob o skate.
   // Isso simula o movimento de flexão do joelho [glTranslatef(0.0f, 0.0f, desloc) - desloc de 0 a -0.15]
