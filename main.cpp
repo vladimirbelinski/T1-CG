@@ -21,11 +21,11 @@ void draw(void) {
   // Se o vetor up é z então yC parece z e zC parece y
   // gluLookAt(12.0, 4.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
   // gluLookAt(0.0, 5.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-  gluLookAt(6.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+  gluLookAt(8.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 
   glPushMatrix();
   glRotatef(alpha_rotateAll += 1.0f, 0.0f, 0.0f, 1.0f);
-  glTranslatef(1.5f, 0.0f, 0.0f);
+  glTranslatef(2.0f, 0.0f, 0.0f);
   // Rotinas que definem os atributos das quádricas
   gluQuadricDrawStyle(qobj, GLU_FILL);
   gluQuadricNormals(qobj, GLU_SMOOTH);
@@ -115,7 +115,7 @@ void redraw(int) {
 // void redraw() {
   glutPostRedisplay();
   draw();
-  glutTimerFunc(20,redraw,1);
+  glutTimerFunc(10,redraw,1);
 }
 
 int main(int argc, char **argv) {
@@ -126,7 +126,7 @@ int main(int argc, char **argv) {
   glutInitWindowPosition(10, 10);
   glutCreateWindow("Android Robot");
   // glutIdleFunc(redraw);
-  glutTimerFunc(20,redraw,1);
+  glutTimerFunc(10,redraw,1);
   glutDisplayFunc(draw);
   glutReshapeFunc(reshape);
   initialize();

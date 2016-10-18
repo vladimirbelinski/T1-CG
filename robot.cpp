@@ -7,8 +7,9 @@ GLfloat alpha_flexAll = 0.0f;
 GLfloat alpha_rotateHead = 0.0f;
 GLfloat alpha_rotateLeftLeg = 0.0f;
 GLfloat alpha_rotateLeftArm = 0.0f;
+GLfloat alpha_rotateLeftArm2 = 0.0f;
 GLfloat alpha_rotateRightArm = 0.0f;
-GLint flexAllMov, headMov, leftLegMov, leftArmMov, rightArmMov;
+GLint flexAllMov, headMov, leftLegMov, leftArmMov, leftArmMov2, rightArmMov;
 
 int idle = 0;
 time_t start;
@@ -221,8 +222,8 @@ void leftLeg(GLUquadricObj *qobj){
 }
 
 void idleAndroid(GLUquadricObj *qobj) {
-  int vel = 15; //Quanto maior o valor, mais lenta é a transição
-  int tempo = 5; //Quanto tempo(segundos) o robo vai ficar parado em cida do skate
+  int vel = 12; //Quanto maior o valor, mais lenta é a transição
+  int tempo = 7; //Quanto tempo(segundos) o robo vai ficar parado em cida do skate
   if (idle == 4) { y_idlePosition = 0.0f; alpha_idleRobot = 0.0f; idle++; }
   if (idle == 5) {
     alpha_idleRobot -= 90.0 / vel;
@@ -236,37 +237,78 @@ void idleAndroid(GLUquadricObj *qobj) {
     y_idlePosition += 0.2 / vel;
     if (alpha_idleRobot >= 0.0f) idle = 0; //>= por causa da precisão
   }
+  // Depois de pegar impulso o android fica de lado no skate
   // [glRotatef(-90, 0.0f, 0.0f, 1.0f) para ficar de lado, glTranslatef(0.0f, -0.2f, 0.0f) para ficar no centro do skate]
   glRotatef(alpha_idleRobot, 0.0f, 0.0f, 1.0f);
   glTranslatef(0.0f, y_idlePosition, 0.0f);
-  //Será que precisa de tanto push e pop?
-  glPushMatrix(); head(qobj); glPopMatrix();
-  glPushMatrix(); body(qobj); glPopMatrix();
-  glPushMatrix(); leftArm(qobj); glPopMatrix();
-  glPushMatrix(); rightArm(qobj); glPopMatrix();
-  glPushMatrix(); leftLeg(qobj); glPopMatrix();
-  glPushMatrix(); rightLeg(qobj); glPopMatrix();
-}
 
-void android(GLUquadricObj *qobj) {
   glPushMatrix();
-  if (idle >= 4) { idleAndroid(qobj); glPopMatrix(); return; }
-
-  // Depois de pegar impulso o android fica de lado no skate
-  // [glRotatef(-90, 0.0f, 0.0f, 1.0f) para ficar de lado, glTranslatef(0.0f, -0.2f, 0.0f) para ficar no centro do skate]
-  //glRotatef(-90, 0.0f, 0.0f, 1.0f);
-  //glTranslatef(0.0f, -0.2f, 0.0f);
-
-  // Quando está pegando impulso todo o corpo desce, exceto a perna direita que está sob o skate.
-  // Isso simula o movimento de flexão do joelho [glTranslatef(0.0f, 0.0f, desloc) - desloc de 0 a -0.15]
-  glPushMatrix();
-  if (flexAllMov == 1 and alpha_flexAll > -0.15f)
+   if (flexAllMov == 1 and alpha_flexAll > -0.08f)
     alpha_flexAll -= 0.00346153f;
   else
     flexAllMov = 2;
 
   if (flexAllMov == 2 and alpha_flexAll <= 0.0f)
-    alpha_flexAll += 0.00346153;
+    alpha_flexAll += 0.0034615f;
+  else
+   flexAllMov = 1;
+    
+  glTranslatef(0.0f, 0.0f, alpha_flexAll);
+  
+  head(qobj);
+  body(qobj);
+  
+  // Movimentação do braço direito
+  glPushMatrix();
+  if (leftArmMov2 == 1 and alpha_rotateLeftArm2 < 5.0f)
+    alpha_rotateLeftArm2 += 0.346152f;
+  else
+    leftArmMov2 = 2;
+
+  if (leftArmMov2 == 2 and alpha_rotateLeftArm2 >= 0.0f)
+    alpha_rotateLeftArm2 -= 0.346152f;
+  else
+    leftArmMov2 = 1;
+
+  glRotatef(alpha_rotateLeftArm2, 0.0f, 1.0f, 0.0f);
+  leftArm(qobj);
+  glPopMatrix();
+  
+  // Movimentação do braço esquerdo
+  glPushMatrix();
+  if (rightArmMov == 1 and alpha_rotateRightArm < 5.0f)
+    alpha_rotateRightArm += 0.346152f;
+  else
+    rightArmMov = 2;
+
+  if (rightArmMov == 2 and alpha_rotateRightArm >= 0.0f)
+    alpha_rotateRightArm -= 0.346152f;
+  else
+    rightArmMov = 1;
+
+  glRotatef(alpha_rotateRightArm, 0.0f, 1.0f, 0.0f);
+  rightArm(qobj);
+  glPopMatrix();
+  
+  glPopMatrix();
+  leftLeg(qobj);
+  rightLeg(qobj);
+}
+
+void android(GLUquadricObj *qobj) {
+  glPushMatrix();
+  if (idle >= 4) { idleAndroid(qobj); glPopMatrix(); alpha_rotateLeftLeg = 0.0f; return; }
+
+  // Quando está pegando impulso todo o corpo desce, exceto a perna direita que está sob o skate.
+  // Isso simula o movimento de flexão do joelho [glTranslatef(0.0f, 0.0f, desloc) - desloc de 0 a -0.15]
+  glPushMatrix();
+  if (flexAllMov == 1 and alpha_flexAll > -0.15f)
+    alpha_flexAll -= 0.01038459f;
+  else
+    flexAllMov = 2;
+
+  if (flexAllMov == 2 and alpha_flexAll <= 0.0f)
+    alpha_flexAll += 0.01038459f;
   else
     { idle += flexAllMov == 2; flexAllMov = 1; } //Sempre cai nesse else quando flexAllMov != 2 e só quero incrementar o idle a primeira vez que entrar aqui
 
@@ -281,12 +323,12 @@ void android(GLUquadricObj *qobj) {
   //Movimentação da cabeça
   glPushMatrix();
   if (headMov == 1 and alpha_rotateHead > -30.0f)
-    alpha_rotateHead -= 0.692307f;
+    alpha_rotateHead -= 2.076921f;
   else
     headMov = 2;
 
   if (headMov == 2 and alpha_rotateHead <= 0.0f)
-    alpha_rotateHead += 0.692307f;
+    alpha_rotateHead += 2.076921f;
   else
     headMov = 1;
 
@@ -299,12 +341,12 @@ void android(GLUquadricObj *qobj) {
   // Movimentação do braço esquerdo
   glPushMatrix();
   if (leftArmMov == 1 and alpha_rotateLeftArm < 45.0f)
-    alpha_rotateLeftArm += 1.038461f;
+    alpha_rotateLeftArm += 3.115383f;
   else
     leftArmMov = 2;
 
   if (leftArmMov == 2 and alpha_rotateLeftArm >= 0.0f)
-    alpha_rotateLeftArm -= 1.038461f;
+    alpha_rotateLeftArm -= 3.115383f;
   else
     leftArmMov = 1;
 
@@ -315,12 +357,12 @@ void android(GLUquadricObj *qobj) {
   // Movimentação do braço direito
   glPushMatrix();
   if (rightArmMov == 1 and alpha_rotateRightArm < 6.0f)
-    alpha_rotateRightArm += 0.138461f;
+    alpha_rotateRightArm += 0.415383f;
   else
     rightArmMov = 2;
 
   if (rightArmMov == 2 and alpha_rotateRightArm >= 0.0f)
-    alpha_rotateRightArm -= 0.138461f;
+    alpha_rotateRightArm -= 0.415383f;
   else
     rightArmMov = 1;
 
@@ -331,12 +373,12 @@ void android(GLUquadricObj *qobj) {
   // Movimentação da perna esquerda
   glPushMatrix();
   if (leftLegMov == 1 and alpha_rotateLeftLeg > -13.0f)
-    alpha_rotateLeftLeg -= 0.3f;
+    alpha_rotateLeftLeg -= 0.9f;
   else
     leftLegMov = 2;
 
   if (leftLegMov == 2 and alpha_rotateLeftLeg <= 0.0f)
-    alpha_rotateLeftLeg += 0.3f;
+    alpha_rotateLeftLeg += 0.9f;
   else
     leftLegMov = 1;
 
