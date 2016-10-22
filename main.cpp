@@ -3,9 +3,17 @@
 #include <stdio.h>
 #include "skate.h"
 #include "robot.h"
+#include <math.h>
+
+#define RADIUS 8
+#define DEFAULT_VIEW 0
+#define UP_VIEW 1
+#define DOWN_VIEW 2
 
 GLfloat alpha_rotateAll = 0.0f;
 GLUquadricObj *qobj;
+double x, y;
+int xflag = 0, yflag = 0, camView = DEFAULT_VIEW;
 
 // Função callback chamada para fazer o desenho
 void draw(void) {
@@ -21,7 +29,12 @@ void draw(void) {
   // Se o vetor up é z então yC parece z e zC parece y
   // gluLookAt(12.0, 4.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
   // gluLookAt(0.0, 5.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-  gluLookAt(8.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+    //gluLookAt(x, y, z, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+  switch (camView) {
+    case DEFAULT_VIEW: gluLookAt(x, y, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f, 0.0f, 1.0f); break;
+    case UP_VIEW: gluLookAt(0.0f, 0.0f, RADIUS, 0.0f, 0.0f,  0.0f, 0.0f, 1.0f, 0.0f); break;
+    case DOWN_VIEW: gluLookAt(0.0f, 0.0f, -RADIUS, 0.0f, 0.0f,  0.0f, 0.0f, -1.0f, 0.0f); break;
+  }
 
   glPushMatrix();
   glRotatef(alpha_rotateAll += 1.0f, 0.0f, 0.0f, 1.0f);
@@ -41,6 +54,7 @@ void draw(void) {
 }
 
 void initialize(void) {
+  x = RADIUS; y = 0; y = 0;
   GLfloat model_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
   GLfloat mat_specular[] = {0.8, 0.8, 0.8, 1.0};          // capacidade de brilho do material
   GLfloat mat_shininess[] = { 90.0 };
@@ -118,13 +132,32 @@ void redraw(int) {
   glutTimerFunc(10,redraw,1);
 }
 
-void keyboard(unsigned char key, int x, int y) {
+void keyboard(unsigned char key, int a, int b) {
+  double vel = 0.2, tmp;
   switch (key) {
-  case 'a': printf("Esquerda\n"); break;
-  case 'd': printf("Direita\n"); break;
-  case 's': printf("Baixo\n"); break;
-  case 'w': printf("Cima\n"); break;
+  //printf("Esquerda\n");
+  case 'a':
+    camView = DEFAULT_VIEW;
+    if (xflag == 0) x -= vel;
+    else x += vel;
+    if (fabs(x) >= 8) { x = x < 0 ? -8 : 8; xflag = !xflag; yflag = !yflag; }
+    tmp = RADIUS * RADIUS - x * x;
+    y = sqrt(tmp < 0 ? 0 : tmp) * (yflag ? 1 : -1);
+    printf("%lf %lf\n", x, y);
+    break;
+  case 'd':
+    camView = DEFAULT_VIEW;
+    if (xflag == 0) x += vel;
+    else x -= vel;
+    if (fabs(x) >= 8) { x = x < 0 ? -8 : 8; xflag = !xflag; yflag = !yflag; }
+    tmp = RADIUS * RADIUS - x * x;
+    y = sqrt(tmp < 0 ? 0 : tmp) * (yflag ? 1 : -1);
+    printf("%lf %lf\n", x, y);
+    break;
+  case 'w': camView = UP_VIEW; break;
+  case 's': camView = DOWN_VIEW; break;
   }
+
 }
 
 int main(int argc, char **argv) {
