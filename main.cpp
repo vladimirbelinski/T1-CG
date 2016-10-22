@@ -118,6 +118,15 @@ void redraw(int) {
   glutTimerFunc(10,redraw,1);
 }
 
+void keyboard(unsigned char key, int x, int y) {
+  switch (key) {
+  case 'a': printf("Esquerda\n"); break;
+  case 'd': printf("Direita\n"); break;
+  case 's': printf("Baixo\n"); break;
+  case 'w': printf("Cima\n"); break;
+  }
+}
+
 int main(int argc, char **argv) {
   glutInit(&argc, argv);
   // GLUT_DEPTH para alocar Z-buffer
@@ -126,6 +135,7 @@ int main(int argc, char **argv) {
   glutInitWindowPosition(10, 10);
   glutCreateWindow("Android Robot");
   // glutIdleFunc(redraw);
+  glutKeyboardFunc(keyboard);
   glutTimerFunc(10,redraw,1);
   glutDisplayFunc(draw);
   glutReshapeFunc(reshape);

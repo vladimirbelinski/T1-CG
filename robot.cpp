@@ -252,9 +252,9 @@ void idleAndroid(GLUquadricObj *qobj) {
     alpha_flexAll += 0.0034615f;
   else
    flexAllMov = 1;
-    
+
   glTranslatef(0.0f, 0.0f, alpha_flexAll);
-  
+
   glPushMatrix();
   if (headMov == 1 and alpha_rotateHead > -30.0f)
     alpha_rotateHead -= 2.076921f/2;
@@ -269,9 +269,9 @@ void idleAndroid(GLUquadricObj *qobj) {
   glRotatef(alpha_rotateHead, 0.0f, 0.0f, 1.0f);
   head(qobj);
   glPopMatrix();
-  
+
   body(qobj);
-  
+
   // Movimentação do braço direito
   glPushMatrix();
   if (leftArmMov2 == 1 and alpha_rotateLeftArm2 < 5.0f)
@@ -287,7 +287,7 @@ void idleAndroid(GLUquadricObj *qobj) {
   glRotatef(alpha_rotateLeftArm2, 0.0f, 1.0f, 0.0f);
   leftArm(qobj);
   glPopMatrix();
-  
+
   // Movimentação do braço esquerdo
   glPushMatrix();
   if (rightArmMov == 1 and alpha_rotateRightArm < 5.0f)
@@ -303,7 +303,7 @@ void idleAndroid(GLUquadricObj *qobj) {
   glRotatef(alpha_rotateRightArm, 0.0f, 1.0f, 0.0f);
   rightArm(qobj);
   glPopMatrix();
-  
+
   glPopMatrix();
   leftLeg(qobj);
   rightLeg(qobj);
@@ -387,12 +387,12 @@ void android(GLUquadricObj *qobj) {
   // Movimentação da perna esquerda
   glPushMatrix();
   if (leftLegMov == 1 and alpha_rotateLeftLeg > -13.0f)
-    alpha_rotateLeftLeg -= 0.9f;
+    alpha_rotateLeftLeg -= 0.75f;
   else
     leftLegMov = 2;
 
   if (leftLegMov == 2 and alpha_rotateLeftLeg <= 0.0f)
-    alpha_rotateLeftLeg += 0.9f;
+    alpha_rotateLeftLeg += 0.75f;
   else
     leftLegMov = 1;
 
