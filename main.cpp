@@ -16,14 +16,15 @@
 #include "robot.h"
 #include <math.h>
 
+//Constantes usadas para o posicionamento da camera
 #define RADIUS 8
 #define DEFAULT_VIEW 0
 #define UP_VIEW 1
 #define DOWN_VIEW 2
 
-GLfloat alpha_rotateAll = 0.0f;
-GLUquadricObj *qobj;
 double x, y;
+GLUquadricObj *qobj;
+GLfloat alpha_rotateAll = 0.0f;
 int xflag = 0, yflag = 0, camView = DEFAULT_VIEW;
 
 // Função callback chamada para fazer o desenho
@@ -36,11 +37,7 @@ void draw(void) {
   // Limpa a janela de visualização com a cor de fundo especificada
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
-  // gluLookAt(xC, yC, zC, xP, yP, zP, xU, yU, zU)
-  // Se o vetor up é z então yC parece z e zC parece y
-  // gluLookAt(12.0, 4.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-  // gluLookAt(0.0, 5.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-  //gluLookAt(x, y, z, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+  //Posiciona a camera
   switch (camView) {
     case DEFAULT_VIEW: gluLookAt(x, y, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f); break;
     case UP_VIEW: gluLookAt(0.0f, 0.0f, RADIUS, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f); break;
@@ -68,7 +65,8 @@ void draw(void) {
 
 // Função de inicialização do programa
 void initialize(void) {
-  x = RADIUS; y = 0; y = 0;
+  //x e y da camera
+  x = RADIUS; y = 0;
 
   // Vetor que contém as características referentes à iluminação do ambiente
   GLfloat model_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
@@ -159,6 +157,7 @@ void redraw(int) {
 void keyboard(unsigned char key, int a, int b) {
   double vel = 0.2, tmp;
   switch (key) {
+  //Caso a tecla pressionada seja 'a', rotaciona para esquerda
   case 'a':
     camView = DEFAULT_VIEW;
     if (xflag == 0) x -= vel;
@@ -167,6 +166,7 @@ void keyboard(unsigned char key, int a, int b) {
     tmp = RADIUS * RADIUS - x * x;
     y = sqrt(tmp < 0 ? 0 : tmp) * (yflag ? 1 : -1);
     break;
+  //Caso a tecla pressionada seja 'a', rotaciona para direita
   case 'd':
     camView = DEFAULT_VIEW;
     if (xflag == 0) x += vel;
@@ -175,7 +175,9 @@ void keyboard(unsigned char key, int a, int b) {
     tmp = RADIUS * RADIUS - x * x;
     y = sqrt(tmp < 0 ? 0 : tmp) * (yflag ? 1 : -1);
     break;
+  //Caso a tecla pressionada seja 'w', muda a camera para cima
   case 'w': camView = UP_VIEW; break;
+  //Caso a tecla pressionada seja 's', muda a camera para baixo
   case 's': camView = DOWN_VIEW; break;
   }
 
