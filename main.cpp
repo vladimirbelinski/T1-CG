@@ -85,7 +85,7 @@ void initialize(void) {
   GLfloat light1_ambient[] = { 0.1, 0.1, 0.1, 1.0 };
   GLfloat light1_diffuse[] = { 0.2, 0.2, 0.2, 1.0 };
   GLfloat light1_specular[] = { 0.7, 0.7, 0.7, 1.0 };
-  GLfloat light1_position[] = { 0.0, 1.0, -30.0, 1.0 };
+  GLfloat light1_position[] = { 0.0, 5.0, -30.0, 1.0 };
 
   // Definição da cor de fundo da janela de visualização como preta
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -147,7 +147,7 @@ void reshape(GLsizei w, GLsizei h) {
 // Função de redesenho
 void redraw(int) {
   glutPostRedisplay();
-  glutTimerFunc(10,redraw,1);
+  glutTimerFunc(50,redraw,1);
 }
 
 // Função de tratamento dos eventos do teclado
@@ -185,19 +185,20 @@ void keyboard(unsigned char key, int a, int b) {
 
 // Função main
 int main(int argc, char **argv) {
+  // Inicialização do GLUT
   glutInit(&argc, argv);
   // GLUT_DEPTH para alocar Z-buffer
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   // Chamada das funções de definição de tamanho e posicionamento da janela
   glutInitWindowSize(800, 720);
   glutInitWindowPosition(10, 10);
-  // Criação da janela
-  glutCreateWindow("Android Robot");
-  // Definição da função de tratmento de teclado
+  // Criação da janela com o título 'Robo Android'
+  glutCreateWindow("Robo Android");
+  // Definição da função de tratamento de teclado
   glutKeyboardFunc(keyboard);
   // Definição da função de timer
-  glutTimerFunc(10,redraw,1);
-  // Definição da função de desenho
+  glutTimerFunc(50,redraw,1);
+  // Definição da função de (re)desenho da janela
   glutDisplayFunc(draw);
   // Definição da função de redefinição da janela
   glutReshapeFunc(reshape);
