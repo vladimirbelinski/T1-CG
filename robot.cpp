@@ -1,8 +1,19 @@
+/* Arquivo: robot.cpp
+   Autores: João Pedro Winckler Bernardi e Vladimir Belinski
+   Descrição: o presente arquivo faz parte da resolução do Trabalho I do CCR Computação Gráfica, 2016-2, do curso de
+              Ciência da Computação da Universidade Federal da Fronteira Sul - UFFS, o qual consiste em uma animação
+              do símbolo do SO Android (robô) andando de skate.
+              --> robot.cpp é o arquivo responsável pela definição das primitivas gráficas que comporão o robô, assim
+              como a movimentação da cabeça, pernas, tronco e braços do robô.
+*/
+
+// Inclusão das bibliotecas necessárias
 #include "misc.h"
 #include "robot.h"
 #include <time.h>
 #include <stdio.h>
 
+// Variáveis que serão utilizadas na movimentação dos membros do robô
 GLfloat alpha_flexAll = 0.0f;
 GLfloat alpha_rotateHead = 0.0f;
 GLfloat alpha_rotateLeftLeg = 0.0f;
@@ -15,6 +26,7 @@ int idle = 0;
 time_t start;
 GLfloat alpha_idleRobot, y_idlePosition;
 
+// A função head é responsável pelo desenho da cabeça do robô na cena
 void head(GLUquadricObj *qobj){
   // Definindo a cor corrente como branco
   glColor3f(1.0f, 1.0f, 1.0f);
@@ -82,6 +94,7 @@ void head(GLUquadricObj *qobj){
   glPopMatrix();
 }
 
+// A função body é responsável pelo desenho do corpo do robô na cena
 void body(GLUquadricObj *qobj){
   // Definindo a cor corrente como verde
   glColor3ub(164, 199, 57);
@@ -113,6 +126,7 @@ void body(GLUquadricObj *qobj){
   glPopMatrix();
 }
 
+// A função rightArm é responsável pelo desenho do braço direito do robô na cena
 void rightArm(GLUquadricObj *qobj){
   // Definindo a cor corrente como branco
   glColor3f(1.0f, 1.0f, 1.0f);
@@ -147,6 +161,7 @@ void rightArm(GLUquadricObj *qobj){
   glPopMatrix();
 }
 
+// A função leftArm é responsável pelo desenho do braço esquerdo do robô na cena
 void leftArm(GLUquadricObj *qobj){
   // Definindo a cor corrente como branco
   glColor3f(1.0f, 1.0f, 1.0f);
@@ -181,6 +196,7 @@ void leftArm(GLUquadricObj *qobj){
   glPopMatrix();
 }
 
+// A função rightLeg é responsável pelo desenho da perna direita do robô na cena
 void rightLeg(GLUquadricObj *qobj){
   // Definindo a cor corrente como verde
   glColor3ub(164, 199, 57);
@@ -201,6 +217,7 @@ void rightLeg(GLUquadricObj *qobj){
   glPopMatrix();
 }
 
+// A função leftLeg é responsável pelo desenho da perna esquerda do robô na cena
 void leftLeg(GLUquadricObj *qobj){
   // Definindo a cor corrente como verde
   glColor3ub(164, 199, 57);
@@ -221,9 +238,12 @@ void leftLeg(GLUquadricObj *qobj){
   glPopMatrix();
 }
 
+// A função idleAndroid é responsável pelo movimento de girar sobre o skate e permanecer se equilibrando sobre ele
 void idleAndroid(GLUquadricObj *qobj) {
-  int vel = 12; //Quanto maior o valor, mais lenta é a transição
-  int tempo = 7; //Quanto tempo(segundos) o robo vai ficar parado em cida do skate
+  // Quanto maior o valor de 'vel', mais lenta é a transição (giro)
+  int vel = 12;
+  // Quanto tempo(segundos) o robo vai ficar parado sobre o skate
+  int tempo = 7;
   if (idle == 4) { y_idlePosition = 0.0f; alpha_idleRobot = 0.0f; idle++; }
   if (idle == 5) {
     alpha_idleRobot -= 90.0 / vel;
@@ -309,8 +329,10 @@ void idleAndroid(GLUquadricObj *qobj) {
   rightLeg(qobj);
 }
 
+// A função android é responsável pelo desenho do robô como um todo na cena e seu efeitos de movimentação
 void android(GLUquadricObj *qobj) {
   glPushMatrix();
+  // Verificação realizada para determinar qual dos movimentos será realizado: impulso ou virada sobre o skate
   if (idle >= 4) { idleAndroid(qobj); glPopMatrix(); alpha_rotateLeftArm = 0.0f; alpha_rotateLeftLeg = 0.0f; return; }
 
   // Quando está pegando impulso todo o corpo desce, exceto a perna direita que está sob o skate.
@@ -324,7 +346,8 @@ void android(GLUquadricObj *qobj) {
   if (flexAllMov == 2 and alpha_flexAll <= 0.0f)
     alpha_flexAll += 0.01038459f;
   else
-    { idle += flexAllMov == 2; flexAllMov = 1; } //Sempre cai nesse else quando flexAllMov != 2 e só quero incrementar o idle a primeira vez que entrar aqui
+    // Sempre cai nesse else quando flexAllMov != 2. Queremos incrementar o idle somente na primeira vez que entrar aqui
+    { idle += flexAllMov == 2; flexAllMov = 1; }
 
   glTranslatef(0.0f, 0.0f, alpha_flexAll);
 
@@ -334,7 +357,7 @@ void android(GLUquadricObj *qobj) {
   // O braço direito sobe e volta à origem [glRotatef(angle, 0.0f, 1.0f, 0.0f) - angle de 0 a 6 graus];
   // A perna esquerda vai para trás e volta à origem [glRotatef(angle, 1.0f, 0.0f, 0.0f) - angle de -13 a 0 graus].
 
-  //Movimentação da cabeça
+  // Movimentação da cabeça
   glPushMatrix();
   if (headMov == 1 and alpha_rotateHead > -30.0f)
     alpha_rotateHead -= 2.076921f;

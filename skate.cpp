@@ -1,13 +1,27 @@
+/* Arquivo: skate.cpp
+   Autores: João Pedro Winckler Bernardi e Vladimir Belinski
+   Descrição: o presente arquivo faz parte da resolução do Trabalho I do CCR Computação Gráfica, 2016-2, do curso de
+              Ciência da Computação da Universidade Federal da Fronteira Sul - UFFS, o qual consiste em uma animação
+              do símbolo do SO Android (robô) andando de skate.
+              --> skate.cpp é o arquivo responsável pela definição das primitivas gráficas que comporão o skate, assim
+              como a movimentação de suas rodas.
+*/
+
+// Inclusão das bibliotecas necessárias
 #include <GL/glut.h>
 #include <GL/glu.h>
 #include "skate.h"
 
+// Variável que será utilizada na movimentação das rodas do skate
 GLfloat alpha_wheels = 0.0f;
 
+// A função skate é responsável pelo desenho do skate na cena
 void skate(GLUquadricObj *qobj) {
+  // Especificação da cor da prancha e guias
+  glColor3ub(192, 192, 192);
+
   // Prancha
   glPushMatrix();
-  glColor3ub(192, 192, 192);
   glTranslatef(-0.20f, 0.0f, -1.26f);
   glScalef(0.5f, 1.5f, 0.07f);
   gluSphere(qobj, 0.5, 50, 50);
@@ -39,6 +53,7 @@ void skate(GLUquadricObj *qobj) {
   gluCylinder(qobj, 0.03, 0.03, 0.11, 200, 200);
   glPopMatrix();
 
+  // Especificação da cor das rodas
   glColor3ub(42, 42, 42);
 
   // Roda esquerda dianteira

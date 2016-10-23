@@ -1,3 +1,14 @@
+/* Arquivo: main.cpp
+   Autores: João Pedro Winckler Bernardi e Vladimir Belinski
+   Descrição: o presente arquivo faz parte da resolução do Trabalho I do CCR Computação Gráfica, 2016-2, do curso de
+              Ciência da Computação da Universidade Federal da Fronteira Sul - UFFS, o qual consiste em uma animação
+              do símbolo do SO Android (robô) andando de skate.
+              --> main.cpp é o principal arquivo do trabalho. Nele são realizadas as configurações de visibilidade,
+              iluminação, posicionamento de câmera, chamada das funções de desenho, gerenciamento de teclado, entre
+              outros.
+*/
+
+// Inclusão das bibliotecas necessárias
 #include <GL/glut.h>
 #include <GL/glu.h>
 #include <stdio.h>
@@ -29,11 +40,11 @@ void draw(void) {
   // Se o vetor up é z então yC parece z e zC parece y
   // gluLookAt(12.0, 4.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
   // gluLookAt(0.0, 5.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-    //gluLookAt(x, y, z, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+  //gluLookAt(x, y, z, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
   switch (camView) {
-    case DEFAULT_VIEW: gluLookAt(x, y, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f, 0.0f, 1.0f); break;
-    case UP_VIEW: gluLookAt(0.0f, 0.0f, RADIUS, 0.0f, 0.0f,  0.0f, 0.0f, 1.0f, 0.0f); break;
-    case DOWN_VIEW: gluLookAt(0.0f, 0.0f, -RADIUS, 0.0f, 0.0f,  0.0f, 0.0f, -1.0f, 0.0f); break;
+    case DEFAULT_VIEW: gluLookAt(x, y, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f); break;
+    case UP_VIEW: gluLookAt(0.0f, 0.0f, RADIUS, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f); break;
+    case DOWN_VIEW: gluLookAt(0.0f, 0.0f, -RADIUS, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f); break;
   }
 
   glPushMatrix();
@@ -44,7 +55,9 @@ void draw(void) {
   gluQuadricNormals(qobj, GLU_SMOOTH);
   gluQuadricOrientation(qobj, GLU_OUTSIDE);
   gluQuadricTexture(qobj, GLU_FALSE);
+  // Chamada da função de desenho do robô
   android(qobj);
+  // Chamada da função de desenho do skate
   skate(qobj);
   glPopMatrix();
 
@@ -53,17 +66,24 @@ void draw(void) {
   glFinish();
 }
 
+// Função de inicialização do programa
 void initialize(void) {
   x = RADIUS; y = 0; y = 0;
+
+  // Vetor que contém as características referentes à iluminação do ambiente
   GLfloat model_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
-  GLfloat mat_specular[] = {0.8, 0.8, 0.8, 1.0};          // capacidade de brilho do material
+
+  // Vetores que contém as características referentes à iluminação do material
+  GLfloat mat_specular[] = {0.8, 0.8, 0.8, 1.0};
   GLfloat mat_shininess[] = { 90.0 };
 
+  // Vetores que contém as características referentes à fonte de luz 0 (diffuse -> cor; specular -> brilho)
   GLfloat light0_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
-  GLfloat light0_diffuse[] = { 0.9, 0.9, 0.9, 1.0 };	    // "cor"
-  GLfloat light0_specular[] = { 0.8, 0.8, 0.8, 1.0 };     // "brilho"
+  GLfloat light0_diffuse[] = { 0.9, 0.9, 0.9, 1.0 };
+  GLfloat light0_specular[] = { 0.8, 0.8, 0.8, 1.0 };
   GLfloat light0_position[] = { -20.0, 20.0, 40.0, 1.0 };
 
+  // Vetores que contém as características referentes à fonte de luz 1
   GLfloat light1_ambient[] = { 0.1, 0.1, 0.1, 1.0 };
   GLfloat light1_diffuse[] = { 0.2, 0.2, 0.2, 1.0 };
   GLfloat light1_specular[] = { 0.7, 0.7, 0.7, 1.0 };
@@ -112,6 +132,7 @@ void initialize(void) {
   glDepthFunc(GL_LESS);
 }
 
+// Função de redefinição da janela
 void reshape(GLsizei w, GLsizei h) {
   // Evita a divisão por zero
   if (h == 0) h = 1;
@@ -125,17 +146,19 @@ void reshape(GLsizei w, GLsizei h) {
   gluPerspective(45, w/h, 1, 100);
 }
 
+// Função de redesenho
 void redraw(int) {
-// void redraw() {
   glutPostRedisplay();
-  draw();
   glutTimerFunc(10,redraw,1);
 }
 
+// Função de tratamento dos eventos do teclado
+// O pressionamento de 'a' e 'd' permite a visualização da cena em um círculo ao redor do robô;
+// O pressionamento de 'w' permite a visualização da cena sobre uma perspectiva de cima;
+// O pressionamento de 's' permite a visualização da cena sobre uma perspectiva de baixo;
 void keyboard(unsigned char key, int a, int b) {
   double vel = 0.2, tmp;
   switch (key) {
-  //printf("Esquerda\n");
   case 'a':
     camView = DEFAULT_VIEW;
     if (xflag == 0) x -= vel;
@@ -143,7 +166,6 @@ void keyboard(unsigned char key, int a, int b) {
     if (fabs(x) >= 8) { x = x < 0 ? -8 : 8; xflag = !xflag; yflag = !yflag; }
     tmp = RADIUS * RADIUS - x * x;
     y = sqrt(tmp < 0 ? 0 : tmp) * (yflag ? 1 : -1);
-    printf("%lf %lf\n", x, y);
     break;
   case 'd':
     camView = DEFAULT_VIEW;
@@ -152,7 +174,6 @@ void keyboard(unsigned char key, int a, int b) {
     if (fabs(x) >= 8) { x = x < 0 ? -8 : 8; xflag = !xflag; yflag = !yflag; }
     tmp = RADIUS * RADIUS - x * x;
     y = sqrt(tmp < 0 ? 0 : tmp) * (yflag ? 1 : -1);
-    printf("%lf %lf\n", x, y);
     break;
   case 'w': camView = UP_VIEW; break;
   case 's': camView = DOWN_VIEW; break;
@@ -160,18 +181,26 @@ void keyboard(unsigned char key, int a, int b) {
 
 }
 
+// Função main
 int main(int argc, char **argv) {
   glutInit(&argc, argv);
   // GLUT_DEPTH para alocar Z-buffer
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+  // Chamada das funções de definição de tamanho e posicionamento da janela
   glutInitWindowSize(800, 720);
   glutInitWindowPosition(10, 10);
+  // Criação da janela
   glutCreateWindow("Android Robot");
-  // glutIdleFunc(redraw);
+  // Definição da função de tratmento de teclado
   glutKeyboardFunc(keyboard);
+  // Definição da função de timer
   glutTimerFunc(10,redraw,1);
+  // Definição da função de desenho
   glutDisplayFunc(draw);
+  // Definição da função de redefinição da janela
   glutReshapeFunc(reshape);
+  // Chamada da função de inicialização
   initialize();
+  // Chamada do loop principal
   glutMainLoop();
 }

@@ -1,9 +1,20 @@
+/* Arquivo: misc.cpp
+   Autores: João Pedro Winckler Bernardi e Vladimir Belinski
+   Descrição: o presente arquivo faz parte da resolução do Trabalho I do CCR Computação Gráfica, 2016-2, do curso de
+              Ciência da Computação da Universidade Federal da Fronteira Sul - UFFS, o qual consiste em uma animação
+              do símbolo do SO Android (robô) andando de skate.
+              --> misc.cpp é o arquivo de miscelâneas do trabalho. Sua única função é meiaEsfera, utilizada para se
+              desenhar uma meia esfera.
+*/
+
+// Inclusão das bibliotecas necessárias
 #include <GL/glut.h>
 #include <GL/glu.h>
 #include <stdio.h>
 #include <math.h>
 #include "misc.h"
 
+// A função meiaEsfera é utilizada para se desenhar uma meia esfera
 void meiaEsfera(float r, int m, int cut) {
   int i, j;
   float tmp, nx, ny, nz, start_nx, start_ny, a, ca, sa;
