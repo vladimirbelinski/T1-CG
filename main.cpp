@@ -123,7 +123,6 @@ void initialize(void) {
 
   // Habilitação da normalização
   glEnable(GL_NORMALIZE);
-  glEnable(GL_RESCALE_NORMAL);
 
   // Habilitação do depth-buffering e indicação da função de teste
   glEnable(GL_DEPTH_TEST);
