@@ -16,7 +16,7 @@
 #include "robot.h"
 #include <math.h>
 
-//Constantes usadas para o posicionamento da camera
+//Constantes usadas para o posicionamento da câmera
 #define RADIUS 8
 #define DEFAULT_VIEW 0
 #define UP_VIEW 1
@@ -37,7 +37,7 @@ void draw(void) {
   // Limpa a janela de visualização com a cor de fundo especificada
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
-  //Posiciona a camera
+  //Posiciona a câmera
   switch (camView) {
     case DEFAULT_VIEW: gluLookAt(x, y, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f); break;
     case UP_VIEW: gluLookAt(0.0f, 0.0f, RADIUS, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f); break;
@@ -65,7 +65,7 @@ void draw(void) {
 
 // Função de inicialização do programa
 void initialize(void) {
-  //x e y da camera
+  //x e y da câmera
   x = RADIUS; y = 0;
 
   // Vetor que contém as características referentes à iluminação do ambiente
@@ -174,9 +174,9 @@ void keyboard(unsigned char key, int a, int b) {
     tmp = RADIUS * RADIUS - x * x;
     y = sqrt(tmp < 0 ? 0 : tmp) * (yflag ? 1 : -1);
     break;
-  //Caso a tecla pressionada seja 'w', muda a camera para cima
+  //Caso a tecla pressionada seja 'w', muda a câmera para cima
   case 'w': camView = UP_VIEW; break;
-  //Caso a tecla pressionada seja 's', muda a camera para baixo
+  //Caso a tecla pressionada seja 's', muda a câmera para baixo
   case 's': camView = DOWN_VIEW; break;
   }
 

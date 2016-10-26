@@ -3,9 +3,14 @@
    Descrição: o presente arquivo faz parte da resolução do Trabalho I do CCR Computação Gráfica, 2016-2, do curso de
               Ciência da Computação da Universidade Federal da Fronteira Sul - UFFS, o qual consiste em uma animação
               do símbolo do SO Android (robô) andando de skate.
-              --> README contém instruções relevantes à compilação e execução do programa
+              --> README contém instruções relevantes à compilação, execução e uso do programa
 */
 
-Compilação:
+Compilação: em ambiente Linux, estando na pasta onde os arquivos que compõem a resolução do trabalho se encontram, executar o comando 'make'
 
-Execução:
+Execução: em ambiente Linux, após a compilação executar o comando ./main
+
+Utilização: para a movimentação da câmera pressione:
+            -> a tecla 'w' para visão superior
+            -> a tecla 's' para visão inferior
+            -> as teclas 'a' e 'd' para um campo de visão em círculo ao redor do robô ('a' move a câmera para a esquerda e 'd' para a direita)

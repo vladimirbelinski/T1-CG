@@ -244,7 +244,7 @@ void idleAndroid(GLUquadricObj *qobj) {
   int vel = 12;
   // Quanto tempo(segundos) o robo vai ficar parado sobre o skate
   int tempo = 7;
-  //idle funciona como uma maquina de estados onde são realizadas as operações necessárias para transição do posicionamento do robô
+  //idle funciona como uma máquina de estados onde são realizadas as operações necessárias para a transição do posicionamento do robô
   if (idle == 4) { y_idlePosition = 0.0f; alpha_idleRobot = 0.0f; idle++; }
   if (idle == 5) {
     alpha_idleRobot -= 90.0 / vel;
