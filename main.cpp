@@ -58,6 +58,13 @@ void draw(void) {
   skate(qobj);
   glPopMatrix();
 
+  // Chão
+  glPushMatrix();
+  glColor4ub(105, 105, 105, 80);
+  glTranslatef(0.0f, 0.0f, -1.42f);
+  gluDisk(qobj, 0.0, 2.7, 30, 30);
+  glPopMatrix();
+
   // Executa os comandos OpenGL
   glutSwapBuffers();
   glFinish();
@@ -127,6 +134,10 @@ void initialize(void) {
   // Habilitação do depth-buffering e indicação da função de teste
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LESS);
+
+  // Habilitando blending (para transparência do chão)
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 // Função de redefinição da janela
